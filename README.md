@@ -1,2 +1,1 @@
-https://steamgpt.net/
-https://pokeapi.co/
+https://www.fruityvice.com/doc/index.html
