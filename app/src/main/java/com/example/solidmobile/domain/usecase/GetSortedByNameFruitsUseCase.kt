@@ -9,10 +9,9 @@ class GetSortedByNameFruitsUseCase (
     suspend operator fun invoke(sortBy: SortOrderFruitByName): List<Fruit>{
         val fruits = repository.getFruit()
         return when (sortBy){
+            SortOrderFruitByName.CALORIES -> fruits.sortedBy { it.nutritions.calories }
             SortOrderFruitByName.NAME -> fruits.sortedBy { it.name }
-            SortOrderFruitByName.ORDER -> fruits.sortedBy { it.order }
-            SortOrderFruitByName.FAMILY -> fruits.sortedBy { it.family }
         }
     }
 }
-enum class SortOrderFruitByName { NAME, ORDER, FAMILY}
+enum class SortOrderFruitByName { CALORIES, NAME }
