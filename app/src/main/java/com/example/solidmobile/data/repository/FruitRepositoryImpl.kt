@@ -63,7 +63,7 @@ class FruitRepositoryImpl : FruitRepository{
             nutritionsId = 3)
     )
     @RequiresApi(Build.VERSION_CODES.O)
-    private val salad = mutableListOf(
+    private val fruitSalad = mutableListOf(
         FruitSalad(
             id = 1,
             name = "TestSalad",
@@ -79,7 +79,7 @@ class FruitRepositoryImpl : FruitRepository{
         )
     )
     override suspend fun getNutritions(): List<Nutritions> {
-        TODO("Not yet implemented")
+        return nutritions.toList()
     }
 
     override suspend fun getFruit(): List<Fruit> {
@@ -87,12 +87,13 @@ class FruitRepositoryImpl : FruitRepository{
         return fruit.toList()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getSalad(): List<FruitSalad> {
-        TODO("Not yet implemented")
+        return fruitSalad.toList()
     }
 
-    override suspend fun getComposition(): List<Composition> {
-        TODO("Not yet implemented")
+    override suspend fun getComposition(): List<СompositionFruitSalad> {
+        return сompositionFruitSalad.toList()
     }
 
     override suspend fun addToSalad(fruitId: Int, saladId: Int) {

@@ -10,6 +10,6 @@ interface FruitRepository{
     suspend fun getNutritions(): List<Nutritions>
     suspend fun getFruit(): List<Fruit>
     suspend fun getSalad(): List<FruitSalad>
-    suspend fun getComposition(): List<Composition>
+    suspend fun getComposition(): List<СompositionFruitSalad>
     suspend fun addToSalad(fruitId: Int, saladId: Int)
 }
