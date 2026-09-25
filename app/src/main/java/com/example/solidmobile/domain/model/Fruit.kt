@@ -6,5 +6,5 @@ data class Fruit(
     val name: String,
     val family: String,
     val order: String,
-    val nutritions: Nutritions,
+    val nutritionsId: Int,
 )
