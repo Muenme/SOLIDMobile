@@ -1,6 +1,7 @@
 package com.example.solidmobile.domain.usecase
 
 import com.example.solidmobile.domain.model.Fruit
+import com.example.solidmobile.domain.model.Nutritions
 import com.example.solidmobile.domain.repository.FruitRepository
 
 class GetSortedByNameFruitsUseCase (
@@ -9,7 +10,14 @@ class GetSortedByNameFruitsUseCase (
     suspend operator fun invoke(sortBy: SortOrderFruitByName): List<Fruit>{
         val fruits = repository.getFruit()
         return when (sortBy){
-            SortOrderFruitByName.CALORIES -> fruits.sortedBy { it.nutritions.calories }
+            SortOrderFruitByName.CALORIES ->
+                {
+                    val nutritionsById = repository.getNutritions().associateBy { it.id }
+
+                    fruits.sortedBy { fruit ->
+                        nutritionsById[fruit.nutritionsId]?.calories ?: Double.MAX_VALUE
+                    }
+                }
             SortOrderFruitByName.NAME -> fruits.sortedBy { it.name }
         }
     }
