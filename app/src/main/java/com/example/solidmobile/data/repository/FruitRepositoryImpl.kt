@@ -9,10 +9,11 @@ import com.example.solidmobile.domain.model.FruitSalad
 import com.example.solidmobile.domain.model.Nutritions
 import com.example.solidmobile.domain.model.СompositionFruitSalad
 import com.example.solidmobile.domain.repository.FruitRepository
+import jakarta.inject.Inject
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 
-class FruitRepositoryImpl : FruitRepository{
+class FruitRepositoryImpl @Inject constructor(): FruitRepository{
     private val nutritions = mutableListOf(
         Nutritions(
             id = 1,
