@@ -66,4 +66,7 @@ dependencies {
     testImplementation(libs.turbine)
     testImplementation(libs.mockk)
     androidTestImplementation(libs.mockk.android)
+
+    //Icon
+    implementation(libs.androidx.compose.material.icons.core)
 }
