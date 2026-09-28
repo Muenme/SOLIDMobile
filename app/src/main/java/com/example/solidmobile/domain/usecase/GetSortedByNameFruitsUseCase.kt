@@ -3,8 +3,9 @@ package com.example.solidmobile.domain.usecase
 import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.model.Nutritions
 import com.example.solidmobile.domain.repository.FruitRepository
+import javax.inject.Inject
 
-class GetSortedByNameFruitsUseCase (
+class GetSortedByNameFruitsUseCase @Inject constructor(
     private val repository: FruitRepository
 ){
     suspend operator fun invoke(sortBy: SortOrderFruitByName): List<Fruit>{
