@@ -69,4 +69,7 @@ dependencies {
 
     //Icon
     implementation(libs.androidx.compose.material.icons.core)
+
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.6")
 }
