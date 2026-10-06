@@ -12,8 +12,9 @@ import androidx.navigation.navArgument
 import com.example.solidmobile.presentation.screen.CreateSaladScreen
 import com.example.solidmobile.presentation.screen.FruitDetailsScreen
 import com.example.solidmobile.presentation.screen.FruitPickerDialog
-import com.example.solidmobile.presentation.screen.SaladsScreen
+import com.example.solidmobile.presentation.screen.SaladEditScreen
 import com.example.solidmobile.ui.screen.salad_details.SaladDetailsScreen
+import com.example.solidmobile.ui.screen.salads.SaladsScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -24,34 +25,49 @@ fun AppNavigation(
         navController = navController,
         startDestination = Screen.Salads.route
     ) {
-
-        composable(Screen.Salads.route) {
-            SaladsScreen(
-                onCreateSaladClick = {
-                    navController.navigate(Screen.CreateSalad.route)
-                },
-                onSaladClick = { saladId ->
-                    navController.navigate(
-                        Screen.SaladDetails.createRoute(saladId)
-                    )
+        composable(
+            route = Screen.SaladEdit.route,
+            arguments = listOf(
+                navArgument("saladId") {
+                    type = NavType.IntType
                 }
             )
-        }
+        ) { backStackEntry ->
 
-        composable(Screen.CreateSalad.route) {
-            CreateSaladScreen (
+            val saladId = backStackEntry.arguments
+                ?.getInt("saladId")
+                ?: Screen.SaladEdit.NEW_SALAD
+
+            SaladEditScreen(
+                saladId = saladId,
                 onBackClick = {
                     navController.navigateUp()
                 },
                 onChooseFruitsClick = {
                     navController.navigate(Screen.FruitPicker.route)
                 },
-                onSaveClick = { saladId ->
+                onSavedClick = { savedSaladId ->
                     navController.navigate(
-                        Screen.SaladDetails.createRoute(saladId)
+                        Screen.SaladDetails.createRoute(savedSaladId)
                     ) {
                         popUpTo(Screen.Salads.route)
                     }
+                }
+            )
+        }
+
+        composable(Screen.Salads.route) {
+            SaladsScreen(
+                onCreateSaladClick = {
+                    navController.navigate(Screen.SaladEdit.createRoute(
+                        Screen.SaladEdit.NEW_SALAD
+                        )
+                    )
+                },
+                onSaladClick = { saladId ->
+                    navController.navigate(
+                        Screen.SaladDetails.createRoute(saladId)
+                    )
                 }
             )
         }

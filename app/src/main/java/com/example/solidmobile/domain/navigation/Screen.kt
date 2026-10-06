@@ -1,10 +1,18 @@
 package com.example.solidmobile.domain.navigation
 
-sealed class Screen(val route: String) {
+sealed class Screen(
+    val route: String
+) {
 
     data object Salads : Screen("salads")
 
-    data object CreateSalad : Screen("create_salad")
+    data object SaladEdit : Screen("salad_edit/{saladId}") {
+        const val NEW_SALAD = -1
+
+        fun createRoute(saladId: Int): String {
+            return "salad_edit/$saladId"
+        }
+    }
 
     data object SaladDetails : Screen("salad_details/{saladId}") {
         private const val SALAD_ID_ARG = "saladId"
