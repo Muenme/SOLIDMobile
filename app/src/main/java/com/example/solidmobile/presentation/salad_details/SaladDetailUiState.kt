@@ -1,4 +1,4 @@
-package com.example.solidmobile.presentation.fruitlist
+package com.example.solidmobile.presentation.salad_details
 import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.model.FruitSalad
 import com.example.solidmobile.domain.model.Nutritions

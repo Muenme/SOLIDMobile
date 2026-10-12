@@ -9,11 +9,11 @@ class GetSortedByNameFruitsUseCase @Inject constructor(
     private val repository: FruitRepository
 ){
     suspend operator fun invoke(sortBy: SortOrderFruitByName): List<Fruit>{
-        val fruits = repository.getFruit()
+        val fruits = repository.getAllFruits()
         return when (sortBy){
             SortOrderFruitByName.CALORIES ->
                 {
-                    val nutritionsById = repository.getNutritions().associateBy { it.id }
+                    val nutritionsById = repository.getAllNutritions().associateBy { it.id }
 
                     fruits.sortedBy { fruit ->
                         nutritionsById[fruit.nutritionsId]?.calories ?: Double.MAX_VALUE

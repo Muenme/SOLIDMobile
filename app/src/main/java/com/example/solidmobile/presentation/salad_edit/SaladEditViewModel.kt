@@ -1,11 +1,11 @@
-package com.example.solidmobile.presentation.fruitlist
+package com.example.solidmobile.presentation.salad_edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.navigation.Screen
 import com.example.solidmobile.domain.repository.FruitRepository
-import com.example.solidmobile.domain.usecase.CalculateSaladCaloriesUseCase
-import com.example.solidmobile.domain.usecase.GetSaladWithFruitsUseCase
+import com.example.solidmobile.domain.repository.SaladRepository
 import com.example.solidmobile.domain.usecase.SaveSaladUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -19,14 +19,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SaladEditViewModel @Inject constructor(
-    private val getSaladWithFruits: GetSaladWithFruitsUseCase,
-    private val saveSalad: SaveSaladUseCase,
-    private val calculateCalories: CalculateSaladCaloriesUseCase,
-    private val fruitRepository: FruitRepository
+    private val saladRepository: SaladRepository,
+    private val fruitRepository: FruitRepository,
+    private val saveSalad: SaveSaladUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SaladEditUiState())
     val uiState: StateFlow<SaladEditUiState> = _uiState.asStateFlow()
+
+    private val _events = Channel<SaladEditEvent>(Channel.BUFFERED)
+    val events = _events.receiveAsFlow()
 
     fun loadSalad(saladId: Int) = viewModelScope.launch {
         if (saladId == Screen.SaladEdit.NEW_SALAD) {
@@ -36,19 +38,22 @@ class SaladEditViewModel @Inject constructor(
 
         _uiState.update { it.copy(isLoading = true, isEditing = true, saladId = saladId) }
 
-        val result = getSaladWithFruits(saladId) ?: run {
-            _uiState.update { it.copy(isLoading = false, errorMessage = "Салат не найден") }
-            return@launch
-        }
+        val salad = saladRepository.getSaladById(saladId)
+        val fruitIds = saladRepository.getFruitIdsForSalad(saladId)
+        val fruits = fruitIds.mapNotNull { fruitRepository.getFruitById(it) }
 
         _uiState.value = SaladEditUiState(
             isLoading = false,
             isEditing = true,
             saladId = saladId,
-            name = result.salad.name,
-            selectedFruits = result.fruits,
-            totalCalories = calculateCalories(result.fruits)
+            name = salad?.name.orEmpty(),
+            selectedFruits = fruits,
+            totalCalories = calculateTotalCalories(fruits)
         )
+    }
+
+    fun changeName(newName: String) {
+        _uiState.update { it.copy(name = newName, nameError = null) }
     }
 
     fun addFruit(fruitId: Int) = viewModelScope.launch {
@@ -59,14 +64,23 @@ class SaladEditViewModel @Inject constructor(
         val updated = current.selectedFruits + fruit
 
         _uiState.update {
-            it.copy(selectedFruits = updated, totalCalories = calculateCalories(updated))
+            it.copy(selectedFruits = updated, totalCalories = calculateTotalCalories(updated))
         }
     }
 
-    fun removeFruit(fruitId: Int) = viewModelScope.launch {
-        val updated = _uiState.value.selectedFruits.filterNot { it.id == fruitId }
-        _uiState.update {
-            it.copy(selectedFruits = updated, totalCalories = calculateCalories(updated))
+    fun removeFruit(fruitId: Int) {
+        val current = _uiState.value
+        val updated = current.selectedFruits.filterNot { it.id == fruitId }
+
+        viewModelScope.launch {
+            val newCalories = calculateTotalCalories(updated)
+
+            _uiState.update {
+                it.copy(
+                    selectedFruits = updated,
+                    totalCalories = newCalories
+                )
+            }
         }
     }
 
@@ -84,7 +98,7 @@ class SaladEditViewModel @Inject constructor(
 
         _uiState.update { it.copy(isSaving = true, errorMessage = null) }
 
-        val savedId = saveSalad(
+        val savedId = saveSalad(                              // ← было saladRepository.saveSalad(...)
             saladId = current.saladId,
             name = current.name,
             fruitIds = current.selectedFruits.map { it.id }
@@ -94,6 +108,6 @@ class SaladEditViewModel @Inject constructor(
         _events.send(SaladEditEvent.Saved(savedId))
     }
 
-    private val _events = Channel<SaladEditEvent>(Channel.BUFFERED)
-    val events = _events.receiveAsFlow()
+    private suspend fun calculateTotalCalories(fruits: List<Fruit>): Double =
+        fruits.sumOf { fruit -> fruitRepository.getNutritionsById(fruit.nutritionsId)?.calories ?: 0.0 }
 }

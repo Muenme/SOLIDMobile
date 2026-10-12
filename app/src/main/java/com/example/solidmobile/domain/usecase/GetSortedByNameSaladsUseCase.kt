@@ -2,13 +2,14 @@ package com.example.solidmobile.domain.usecase
 
 import com.example.solidmobile.domain.model.FruitSalad
 import com.example.solidmobile.domain.repository.FruitRepository
+import com.example.solidmobile.domain.repository.SaladRepository
 import javax.inject.Inject
 
 class GetSortedByNameSaladsUseCase @Inject constructor(
-    private val repository: FruitRepository
+    private val repository: SaladRepository
 ){
     suspend operator fun invoke(sortBy: SortOrderSaladByName): List<FruitSalad>{
-        val salads = repository.getSalad()
+        val salads = repository.getAllSalads()
         return when (sortBy){
             SortOrderSaladByName.NAME -> salads.sortedBy { it.name }
         }

@@ -1,5 +1,6 @@
 package com.example.solidmobile.presentation.screen
 
+import com.example.solidmobile.presentation.salad_edit.SaladEditViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,17 +39,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.navigation.Screen
-import com.example.solidmobile.presentation.fruitlist.SaladEditUiState
-import com.example.solidmobile.presentation.fruitlist.SaladEditViewModel
+import com.example.solidmobile.presentation.fruit_details.FruitPickerDialog
+import com.example.solidmobile.presentation.salad_edit.SaladEditEvent
+import com.example.solidmobile.presentation.salad_edit.SaladEditUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,23 +62,26 @@ fun SaladEditScreen(
     onBackClick: () -> Unit,
     onChooseFruitsClick: () -> Unit,
     onSavedClick: (Int) -> Unit,
-    viewModel: SaladEditViewModel = viewModel()
+    viewModel: SaladEditViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var showFruitPicker by remember { mutableStateOf(false) }
 
+    if (showFruitPicker) {
+        FruitPickerDialog(
+            onDismiss = { showFruitPicker = false },
+            onFruitSelected = viewModel::addFruit
+        )
+    }
     LaunchedEffect(saladId) {
         viewModel.loadSalad(saladId)
     }
 
-    LaunchedEffect(uiState.isSaved) {
-        if (uiState.isSaved) {
-            val savedSaladId = uiState.savedSaladId
-
-            if (savedSaladId != null) {
-                onSavedClick(savedSaladId)
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { event ->
+            when (event) {
+                is SaladEditEvent.Saved -> onSavedClick(event.saladId)
             }
-
-            viewModel.resetSavedState()
         }
     }
 

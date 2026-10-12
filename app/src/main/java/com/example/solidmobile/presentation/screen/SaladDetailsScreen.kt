@@ -43,10 +43,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.solidmobile.domain.model.Fruit
-import com.example.solidmobile.presentation.fruitlist.SaladDetailsUiState
-import com.example.solidmobile.presentation.fruitlist.SaladDetailsViewModel
+import com.example.solidmobile.presentation.salad_details.SaladDetailsUiState
+import com.example.solidmobile.presentation.salad_details.SaladDetailsViewModel
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -57,7 +58,7 @@ fun SaladDetailsScreen(
     saladId: Int,
     onBackClick: () -> Unit,
     onFruitClick: (Int) -> Unit = {},
-    viewModel: SaladDetailsViewModel = viewModel()
+    viewModel: SaladDetailsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

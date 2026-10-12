@@ -9,7 +9,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
-import com.example.solidmobile.presentation.screen.CreateSaladScreen
 import com.example.solidmobile.presentation.screen.FruitDetailsScreen
 import com.example.solidmobile.presentation.screen.FruitPickerDialog
 import com.example.solidmobile.presentation.screen.SaladEditScreen

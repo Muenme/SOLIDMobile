@@ -40,9 +40,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.solidmobile.domain.model.FruitSalad
-import com.example.solidmobile.presentation.fruitlist.SaladsViewModel
+import com.example.solidmobile.presentation.common.ErrorContent
+import com.example.solidmobile.presentation.salads.SaladsViewModel
+import com.example.solidmobile.presentation.salads.SaladsUiState
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
@@ -51,7 +54,7 @@ import java.util.Locale
 fun SaladsScreen(
     onCreateSaladClick: () -> Unit,
     onSaladClick: (Int) -> Unit,
-    viewModel: SaladsViewModel = viewModel()
+    viewModel: SaladsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -93,28 +96,17 @@ fun SaladsScreen(
                 )
             )
 
-            when {
-                uiState.isLoading -> {
-                    LoadingContent()
-                }
-
-                uiState.errorMessage != null -> {
-                    ErrorContent(
-                        message = uiState.errorMessage ?: "Ошибка загрузки"
-                    )
-                }
-
-                uiState.salads.isEmpty() -> {
-                    EmptySaladsContent(
-                        onCreateSaladClick = onCreateSaladClick
-                    )
-                }
-
-                else -> {
-                    SaladsList(
-                        salads = uiState.salads,
-                        onSaladClick = onSaladClick
-                    )
+            when (val state = uiState) {
+                is SaladsUiState.Loading -> LoadingContent(Modifier.padding(innerPadding))
+                is SaladsUiState.Error -> ErrorContent(
+                    message = state.message,
+                    onRetry = viewModel::loadSalads,
+                    modifier = Modifier.padding(innerPadding)
+                )
+                is SaladsUiState.Success -> if (state.salads.isEmpty()) {
+                    EmptySaladsContent(onCreateSaladClick)
+                } else {
+                    SaladsList(state.salads, onSaladClick)
                 }
             }
         }

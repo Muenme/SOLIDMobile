@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SOLIDMobile">
         <activity
-            android:name=".presentation.fruitlist.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.SOLIDMobile"

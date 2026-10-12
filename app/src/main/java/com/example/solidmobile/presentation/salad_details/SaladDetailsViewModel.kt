@@ -1,4 +1,4 @@
-package com.example.solidmobile.presentation.fruitlist
+package com.example.solidmobile.presentation.salad_details
 
 import android.os.Build
 import androidx.annotation.RequiresApi

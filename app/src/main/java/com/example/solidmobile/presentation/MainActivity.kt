@@ -1,4 +1,4 @@
-package com.example.solidmobile.presentation.fruitlist
+package com.example.solidmobile.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

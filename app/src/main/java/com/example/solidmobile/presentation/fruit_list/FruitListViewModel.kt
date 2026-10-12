@@ -1,4 +1,4 @@
-package com.example.solidmobile.presentation.fruitlist
+package com.example.solidmobile.presentation.fruit_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

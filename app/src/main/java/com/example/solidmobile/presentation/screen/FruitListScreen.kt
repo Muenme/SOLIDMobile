@@ -1,11 +1,10 @@
-package com.example.solidmobile.presentation.fruitlist
+package com.example.solidmobile.presentation.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -16,6 +15,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.usecase.SortOrderFruitByName
+import com.example.solidmobile.presentation.fruit_list.FruitListUiState
+import com.example.solidmobile.presentation.fruit_list.FruitListViewModel
 
 // "Умная" версия — знает про ViewModel
 @Composable
