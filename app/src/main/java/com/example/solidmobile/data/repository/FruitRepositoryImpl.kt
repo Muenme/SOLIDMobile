@@ -1,108 +1,39 @@
 package com.example.solidmobile.data.repository
 
-import android.os.Build
-import android.os.VibrationEffect
-import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composition
 import com.example.solidmobile.domain.model.Fruit
-import com.example.solidmobile.domain.model.FruitSalad
 import com.example.solidmobile.domain.model.Nutritions
-import com.example.solidmobile.domain.model.СompositionFruitSalad
 import com.example.solidmobile.domain.repository.FruitRepository
 import jakarta.inject.Inject
 import kotlinx.coroutines.delay
-import java.time.LocalDateTime
 
 class FruitRepositoryImpl @Inject constructor(): FruitRepository{
-    private val nutritions = mutableListOf(
-        Nutritions(
-            id = 1,
-            carbohydrates = 5.5,
-            protein = 0.8,
-            fat = 0.4,
-            calories = 29.0,
-            sugar = 5.4
-        ),
-        Nutritions(
-            id = 2,
-            carbohydrates = 22.0,
-            protein = 1.0,
-            fat = 0.2,
-            calories = 96.0,
-            sugar = 17.2
-        ),
-        Nutritions(
-            id = 3,
-            carbohydrates = 15.0,
-            protein = 0.4,
-            fat = 0.1,
-            calories = 57.0,
-            sugar = 10.0
-        )
+    private val nutritions = listOf(
+        Nutritions(1, carbohydrates = 5.5, protein = 0.8, fat = 0.4, calories = 29.0, sugar = 5.4),
+        Nutritions(2, carbohydrates = 22.0, protein = 1.0, fat = 0.2, calories = 96.0, sugar = 17.2),
+        Nutritions(3, carbohydrates = 15.0, protein = 0.4, fat = 0.1, calories = 57.0, sugar = 10.0)
     )
-    private val fruit = mutableListOf(
-        Fruit(
-            id = 1,
-            genus = "TestFragaria",
-            name = "TestStrawberry",
-            family = "TestRosaceae",
-            order = "TestRosales",
-            nutritionsId = 1),
-        Fruit(
-            id = 2,
-            genus = "TestMusa",
-            name = "TestBanana",
-            family = "TestMusaceae",
-            order = "TestZingiberales",
-            nutritionsId = 2),
-        Fruit(
-            id = 3,
-            genus = "TestPyrus",
-            name = "TestPear",
-            family = "TestRosaceae",
-            order = "TestRosales",
-            nutritionsId = 3)
-    )
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val fruitSalad = mutableListOf(
-        FruitSalad(
-            id = 1,
-            name = "TestSalad",
-            calories = 42.42,
-            dateUpdate = LocalDateTime.now()
-        )
-    )
-    private val сompositionFruitSalad = mutableListOf(
-        СompositionFruitSalad(
-            id = 1,
-            fruitId = 1,
-            saladId = 1
-        )
-    )
-    override suspend fun getNutritions(): List<Nutritions> {
-        return nutritions.toList()
-    }
 
-    override suspend fun getFruit(): List<Fruit> {
+    private val fruits = listOf(
+        Fruit(1, genus = "Fragaria", name = "Клубника", family = "Rosaceae", order = "Rosales", nutritionsId = 1),
+        Fruit(2, genus = "Musa", name = "Банан", family = "Musaceae", order = "Zingiberales", nutritionsId = 2),
+        Fruit(3, genus = "Pyrus", name = "Груша", family = "Rosaceae", order = "Rosales", nutritionsId = 3)
+    )
+
+    override suspend fun getAllFruits(): List<Fruit> {
         delay(300)
-        return fruit.toList()
+        return fruits
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun getSalad(): List<FruitSalad> {
-        return fruitSalad.toList()
+    override suspend fun getFruitById(id: Int): Fruit? {
+        delay(100)
+        return fruits.firstOrNull { it.id == id }
     }
 
-    override suspend fun getComposition(): List<СompositionFruitSalad> {
-        return сompositionFruitSalad.toList()
+    override suspend fun getAllNutritions(): List<Nutritions> {
+        return nutritions
     }
 
-    override suspend fun addToSalad(fruitId: Int, saladId: Int) {
-        сompositionFruitSalad.add(
-            СompositionFruitSalad(
-                id = 1,
-                fruitId = fruitId,
-                saladId = saladId
-        ))
+    override suspend fun getNutritionsById(id: Int): Nutritions? {
+        return nutritions.firstOrNull { it.id == id }
     }
 }

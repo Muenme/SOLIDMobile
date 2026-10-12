@@ -1,7 +1,9 @@
 package com.example.solidmobile.data.di
 
 import com.example.solidmobile.data.repository.FruitRepositoryImpl
+import com.example.solidmobile.data.repository.SaladRepositoryImpl
 import com.example.solidmobile.domain.repository.FruitRepository
+import com.example.solidmobile.domain.repository.SaladRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,4 +18,9 @@ abstract class RepositoryModule {
         impl: FruitRepositoryImpl
     ): FruitRepository
     // ↑ "Когда кто-то попросит FruitRepository — подставляй FruitRepositoryImpl"
+
+    @Binds
+    abstract fun bindSaladRepository(
+        impl: SaladRepositoryImpl
+    ): SaladRepository
 }
