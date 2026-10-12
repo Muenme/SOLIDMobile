@@ -13,7 +13,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.repository.FruitRepository
-import com.example.solidmobile.presentation.screen.FruitItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

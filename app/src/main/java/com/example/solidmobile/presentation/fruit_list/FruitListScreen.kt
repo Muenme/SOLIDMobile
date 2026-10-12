@@ -1,4 +1,4 @@
-package com.example.solidmobile.presentation.screen
+package com.example.solidmobile.presentation.fruit_list
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,8 +15,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.usecase.SortOrderFruitByName
-import com.example.solidmobile.presentation.fruit_list.FruitListUiState
-import com.example.solidmobile.presentation.fruit_list.FruitListViewModel
 
 // "Умная" версия — знает про ViewModel
 @Composable

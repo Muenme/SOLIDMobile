@@ -1,6 +1,5 @@
-package com.example.solidmobile.presentation.screen
+package com.example.solidmobile.presentation.salad_edit
 
-import com.example.solidmobile.presentation.salad_edit.SaladEditViewModel
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,12 +47,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.navigation.Screen
 import com.example.solidmobile.presentation.fruit_details.FruitPickerDialog
-import com.example.solidmobile.presentation.salad_edit.SaladEditEvent
-import com.example.solidmobile.presentation.salad_edit.SaladEditUiState
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -371,7 +368,7 @@ private fun formatNumber(number: Double): String {
         number.toInt().toString()
     } else {
         String.format(
-            java.util.Locale.US,
+            Locale.US,
             "%.1f",
             number
         )

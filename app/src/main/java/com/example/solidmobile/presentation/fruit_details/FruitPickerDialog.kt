@@ -1,4 +1,4 @@
-package com.example.solidmobile.presentation.screen
+package com.example.solidmobile.presentation.fruit_details
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -69,7 +69,7 @@ fun FruitItem(
     onClick: () -> Unit
 ) {
     Column(
-        modifier = androidx.compose.ui.Modifier.clickable(
+        modifier = Modifier.clickable(
             onClick = onClick
         )
     ) {

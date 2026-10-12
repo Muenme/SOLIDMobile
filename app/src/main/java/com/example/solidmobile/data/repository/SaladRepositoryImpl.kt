@@ -23,8 +23,6 @@ class SaladRepositoryImpl @Inject constructor() : SaladRepository {
         FruitSaladComposition(id = 1, fruitId = 1, saladId = 1)
     )
 
-    // Счётчики id — отдельно для каждой "таблицы", как в реальной БД с автоинкрементом.
-    // Это чинит баг с хардкодом id=1 в оригинальном addToSalad().
     @RequiresApi(Build.VERSION_CODES.O)
     private val saladIdCounter = AtomicInteger(salads.maxOf { it.id })
     private val compositionIdCounter = AtomicInteger(composition.maxOf { it.id })

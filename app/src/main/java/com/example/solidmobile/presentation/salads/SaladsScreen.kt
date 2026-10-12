@@ -41,7 +41,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.solidmobile.domain.model.FruitSalad
 import com.example.solidmobile.presentation.common.ErrorContent
 import com.example.solidmobile.presentation.salads.SaladsViewModel

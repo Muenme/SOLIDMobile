@@ -1,4 +1,4 @@
-package com.example.solidmobile.presentation.screen
+package com.example.solidmobile.presentation.fruit_details
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
