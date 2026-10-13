@@ -14,10 +14,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -36,6 +40,7 @@ import com.example.solidmobile.domain.model.Fruit
 fun FruitPickerDialog(
     onDismiss: () -> Unit,
     onFruitClick: (Int) -> Unit,
+    onAddFruitClick: (Int) -> Unit,
     viewModel: FruitPickerViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -64,7 +69,8 @@ fun FruitPickerDialog(
                 else -> {
                     FruitsList(
                         fruits = uiState.fruits,
-                        onFruitClick = onFruitClick
+                        onFruitClick = onFruitClick,
+                        onAddFruitClick = onAddFruitClick
                     )
                 }
             }
@@ -83,6 +89,7 @@ fun FruitPickerDialog(
 private fun FruitsList(
     fruits: List<Fruit>,
     onFruitClick: (Int) -> Unit,
+    onAddFruitClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -101,6 +108,9 @@ private fun FruitsList(
                 fruit = fruit,
                 onClick = {
                     onFruitClick(fruit.id)
+                },
+                onAddClick = {
+                    onAddFruitClick(fruit.id)
                 }
             )
         }
@@ -111,6 +121,7 @@ private fun FruitsList(
 fun FruitItem(
     fruit: Fruit,
     onClick: () -> Unit,
+    onAddClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -161,6 +172,15 @@ fun FruitItem(
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.primary
             )
+            IconButton (
+                onClick = onAddClick
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Добавить фрукт в салат",
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }

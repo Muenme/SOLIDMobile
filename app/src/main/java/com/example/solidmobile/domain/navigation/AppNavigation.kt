@@ -42,8 +42,10 @@ fun AppNavigation(
                 onBackClick = {
                     navController.navigateUp()
                 },
-                onChooseFruitsClick = {
-                    navController.navigate(Screen.FruitPicker.route)
+                onFruitDetailsClick = { fruitId ->
+                    navController.navigate(
+                        Screen.FruitDetails.createRoute(fruitId)
+                    )
                 },
                 onSavedClick = { savedSaladId ->
                     navController.navigate(
@@ -71,18 +73,19 @@ fun AppNavigation(
             )
         }
 
-        dialog(Screen.FruitPicker.route) {
-            FruitPickerDialog (
-                onDismiss = {
-                    navController.navigateUp()
-                },
-                onFruitClick = { fruitId ->
-                    navController.navigate(
-                        Screen.FruitDetails.createRoute(fruitId)
-                    )
-                }
-            )
-        }
+//        dialog(Screen.FruitPicker.route) {
+//            FruitPickerDialog (
+//                onDismiss = {
+//                    navController.navigateUp()
+//                },
+//                onFruitClick = { fruitId ->
+//                    navController.navigate(
+//                        Screen.FruitDetails.createRoute(fruitId)
+//                    )
+//                },
+//                onAddFruitClick =
+//            )
+//        }
 
         composable(
             route = Screen.FruitDetails.route,

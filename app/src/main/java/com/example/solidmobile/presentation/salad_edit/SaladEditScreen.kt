@@ -47,6 +47,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.navigation.Screen
 import com.example.solidmobile.presentation.fruit_picker.FruitPickerDialog
@@ -57,7 +58,7 @@ import java.util.Locale
 fun SaladEditScreen(
     saladId: Int,
     onBackClick: () -> Unit,
-    onChooseFruitsClick: () -> Unit,
+    onFruitDetailsClick: (Int) -> Unit,
     onSavedClick: (Int) -> Unit,
     viewModel: SaladEditViewModel = hiltViewModel()
 ) {
@@ -66,9 +67,15 @@ fun SaladEditScreen(
 
     if (showFruitPicker) {
         FruitPickerDialog(
-            onDismiss = { showFruitPicker = false },
+            onDismiss = {
+                showFruitPicker = false
+            },
             onFruitClick = { fruitId ->
+                onFruitDetailsClick(fruitId)
+            },
+            onAddFruitClick = { fruitId ->
                 viewModel.addFruit(fruitId)
+                showFruitPicker = false
             }
         )
     }
@@ -128,7 +135,9 @@ fun SaladEditScreen(
             SaladEditContent(
                 uiState = uiState,
                 onNameChange = viewModel::changeName,
-                onAddFruitClick = onChooseFruitsClick,
+                onAddFruitClick = {
+                    showFruitPicker = true
+                },
                 onRemoveFruitClick = viewModel::removeFruit,
                 onSaveClick = viewModel::saveSalad,
                 modifier = Modifier.padding(innerPadding)

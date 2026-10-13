@@ -24,7 +24,7 @@ sealed class Screen(
         fun getSaladIdArgument(): String = SALAD_ID_ARG
     }
 
-    data object FruitPicker : Screen("fruit_picker")
+//    data object FruitPicker : Screen("fruit_picker")
 
     data object FruitDetails : Screen("fruit_details/{fruitId}") {
         private const val FRUIT_ID_ARG = "fruitId"
