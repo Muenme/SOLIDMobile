@@ -1,96 +1,64 @@
+// data/repository/SaladRepositoryImpl.kt
 package com.example.solidmobile.data.repository
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.solidmobile.data.local.dao.SaladDao
+import com.example.solidmobile.data.local.entity.FruitSaladEntity
+import com.example.solidmobile.data.local.entity.SaladFruitCrossRef
+import com.example.solidmobile.data.local.toDomain
 import com.example.solidmobile.domain.model.FruitSalad
-import com.example.solidmobile.domain.model.FruitSaladComposition
 import com.example.solidmobile.domain.repository.SaladRepository
-import kotlinx.coroutines.delay
 import java.time.LocalDateTime
-import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SaladRepositoryImpl @Inject constructor() : SaladRepository {
+class SaladRepositoryImpl @Inject constructor(
+    private val saladDao: SaladDao
+) : SaladRepository {
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val salads = mutableListOf(
-        FruitSalad(id = 1, name = "Тестовый салат", calories = 0.0, dateUpdate = LocalDateTime.now())
-    )
+    override suspend fun getAllSalads(): List<FruitSalad> =
+        saladDao.getAllSalads().map { it.toDomain() }
 
-    private val composition = mutableListOf(
-        FruitSaladComposition(id = 1, fruitId = 1, saladId = 1)
-    )
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val saladIdCounter = AtomicInteger(salads.maxOf { it.id })
-    private val compositionIdCounter = AtomicInteger(composition.maxOf { it.id })
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun getAllSalads(): List<FruitSalad> {
-        delay(300)
-        return salads.toList()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun getSaladById(saladId: Int): FruitSalad? {
-        delay(150)
-        return salads.firstOrNull { it.id == saladId }
-    }
+    override suspend fun getSaladById(saladId: Int): FruitSalad? =
+        saladDao.getSaladById(saladId)?.toDomain()
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun createSalad(name: String): Int {
-        delay(200)
-        val newId = saladIdCounter.incrementAndGet()
-        salads.add(
-            FruitSalad(id = newId, name = name, calories = 0.0, dateUpdate = LocalDateTime.now())
+        val entity = FruitSaladEntity(
+            id = 0,                       // Room сам сгенерирует id
+            name = name,
+            calories = 0.0,
+            dateUpdate = LocalDateTime.now()
         )
-        return newId
+        return saladDao.insertSalad(entity).toInt()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun updateSaladName(saladId: Int, name: String) {
-        val index = salads.indexOfFirst { it.id == saladId }
-        if (index == -1) return
-        salads[index] = salads[index].copy(name = name, dateUpdate = LocalDateTime.now())
+        val current = saladDao.getSaladById(saladId) ?: return
+        saladDao.updateSalad(current.copy(name = name, dateUpdate = LocalDateTime.now()))
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun updateSaladCalories(saladId: Int, calories: Double) {
-        val index = salads.indexOfFirst { it.id == saladId }
-        if (index == -1) return
-        salads[index] = salads[index].copy(calories = calories, dateUpdate = LocalDateTime.now())
+        val current = saladDao.getSaladById(saladId) ?: return
+        saladDao.updateSalad(current.copy(calories = calories, dateUpdate = LocalDateTime.now()))
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun deleteSalad(saladId: Int) {
-        salads.removeAll { it.id == saladId }
-        composition.removeAll { it.saladId == saladId }
+        saladDao.deleteSaladById(saladId)   // связи в cross_ref удалятся каскадом
     }
 
-    override suspend fun getFruitIdsForSalad(saladId: Int): List<Int> {
-        return composition.filter { it.saladId == saladId }.map { it.fruitId }
-    }
+    override suspend fun getFruitIdsForSalad(saladId: Int): List<Int> =
+        saladDao.getFruitIdsForSalad(saladId)
 
     override suspend fun addFruitToSalad(saladId: Int, fruitId: Int) {
-        val alreadyAdded = composition.any {
-            it.saladId == saladId && it.fruitId == fruitId
-        }
-        if (alreadyAdded) return
-
-        composition.add(
-            FruitSaladComposition(
-                id = compositionIdCounter.incrementAndGet(),
-                fruitId = fruitId,
-                saladId = saladId
-            )
-        )
+        saladDao.addFruitToSalad(SaladFruitCrossRef(saladId, fruitId))
     }
 
     override suspend fun removeFruitFromSalad(saladId: Int, fruitId: Int) {
-        composition.removeAll {
-            it.saladId == saladId && it.fruitId == fruitId
-        }
+        saladDao.removeFruitFromSalad(saladId, fruitId)
     }
 }
