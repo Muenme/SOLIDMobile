@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import androidx.navigation.navArgument
 import com.example.solidmobile.presentation.fruit_details.FruitDetailsScreen
-import com.example.solidmobile.presentation.fruit_details.FruitPickerDialog
+import com.example.solidmobile.presentation.fruit_picker.FruitPickerDialog
 import com.example.solidmobile.presentation.salad_edit.SaladEditScreen
 import com.example.solidmobile.ui.screen.salad_details.SaladDetailsScreen
 import com.example.solidmobile.ui.screen.salads.SaladsScreen

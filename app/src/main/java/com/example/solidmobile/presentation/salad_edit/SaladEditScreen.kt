@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.navigation.Screen
-import com.example.solidmobile.presentation.fruit_details.FruitPickerDialog
+import com.example.solidmobile.presentation.fruit_picker.FruitPickerDialog
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,7 +67,9 @@ fun SaladEditScreen(
     if (showFruitPicker) {
         FruitPickerDialog(
             onDismiss = { showFruitPicker = false },
-            onFruitSelected = viewModel::addFruit
+            onFruitClick = { fruitId ->
+                viewModel.addFruit(fruitId)
+            }
         )
     }
     LaunchedEffect(saladId) {
