@@ -73,20 +73,6 @@ fun AppNavigation(
             )
         }
 
-//        dialog(Screen.FruitPicker.route) {
-//            FruitPickerDialog (
-//                onDismiss = {
-//                    navController.navigateUp()
-//                },
-//                onFruitClick = { fruitId ->
-//                    navController.navigate(
-//                        Screen.FruitDetails.createRoute(fruitId)
-//                    )
-//                },
-//                onAddFruitClick =
-//            )
-//        }
-
         composable(
             route = Screen.FruitDetails.route,
             arguments = listOf(
@@ -130,6 +116,9 @@ fun AppNavigation(
                     navController.navigate(
                         Screen.FruitDetails.createRoute(fruitId)
                     )
+                },
+                onEditClick = { id ->                                     // ← новое
+                    navController.navigate(Screen.SaladEdit.createRoute(id))
                 }
             )
         }
