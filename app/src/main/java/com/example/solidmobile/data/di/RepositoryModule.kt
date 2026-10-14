@@ -1,5 +1,7 @@
 package com.example.solidmobile.data.di
 
+import com.example.solidmobile.data.remote.datasource.FruitRemoteDataSource
+import com.example.solidmobile.data.remote.datasource.FruitRemoteDataSourceImpl
 import com.example.solidmobile.data.repository.FruitRepositoryImpl
 import com.example.solidmobile.data.repository.SaladRepositoryImpl
 import com.example.solidmobile.domain.repository.FruitRepository
@@ -8,6 +10,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class) // один репозиторий на всё приложение
@@ -23,4 +26,9 @@ abstract class RepositoryModule {
     abstract fun bindSaladRepository(
         impl: SaladRepositoryImpl
     ): SaladRepository
+
+    @Binds
+    abstract fun bindFruitRemoteDataSource(
+        impl: FruitRemoteDataSourceImpl
+    ): FruitRemoteDataSource
 }

@@ -55,9 +55,13 @@ class SaladRepositoryImpl @Inject constructor(
         saladDao.getFruitIdsForSalad(saladId)
 
     override suspend fun addFruitToSalad(saladId: Int, fruitId: Int) {
-        saladDao.addFruitToSalad(SaladFruitCrossRef(saladId, fruitId))
+        saladDao.addFruitToSalad(
+            SaladFruitCrossRef(
+                saladId = saladId,
+                fruitId = fruitId
+            )
+        )
     }
-
     override suspend fun removeFruitFromSalad(saladId: Int, fruitId: Int) {
         saladDao.removeFruitFromSalad(saladId, fruitId)
     }

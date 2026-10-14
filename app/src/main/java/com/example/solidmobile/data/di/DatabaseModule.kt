@@ -3,7 +3,6 @@ package com.example.solidmobile.data.di
 import android.content.Context
 import androidx.room.Room
 import com.example.solidmobile.data.local.AppDatabase
-import com.example.solidmobile.data.local.dao.FruitDao
 import com.example.solidmobile.data.local.dao.SaladDao
 import dagger.Module
 import dagger.Provides
@@ -25,11 +24,10 @@ object DatabaseModule {
             context,
             AppDatabase::class.java,
             "solid_mobile.db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
-
-    @Provides
-    fun provideFruitDao(database: AppDatabase): FruitDao = database.fruitDao()
 
     @Provides
     fun provideSaladDao(database: AppDatabase): SaladDao = database.saladDao()
