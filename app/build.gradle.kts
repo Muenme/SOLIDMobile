@@ -81,12 +81,13 @@ dependencies {
 //    testImplementation(libs.mockk)
 //    androidTestImplementation(libs.mockk.android)
 
+    //Тесты
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")   // версия из BOM
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    //Тесты
-    testImplementation("junit:junit:4.13.2")
 //    androidTestImplementation("androidx.test.ext:junit:1.1.5")
 //    androidTestImplementation("androidx.compose.ui:ui-test-junit4:<compose_version>")
 //    debugImplementation("androidx.compose.ui:ui-test-manifest:<compose_version>")
