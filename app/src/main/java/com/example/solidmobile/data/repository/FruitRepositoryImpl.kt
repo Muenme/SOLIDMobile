@@ -16,7 +16,7 @@ import javax.inject.Singleton
 //) : FruitRepository {
 //
 //    // Таблицы фруктов/нутриентов - статичный справочник
-//    // Заполняем один раз при первом обращении, если БД ещё пуста
+//    // Заполняем один раз при первом обращении, если БД еще пуста
 //    private val seedMutex = Mutex()
 //    private var isSeeded = false
 //

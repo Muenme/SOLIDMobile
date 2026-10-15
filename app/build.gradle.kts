@@ -37,6 +37,20 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force(
+            "androidx.test.espresso:espresso-core:3.7.0",
+            "androidx.test.espresso:espresso-idling-resource:3.7.0",
+            "androidx.test:runner:1.7.0",
+            "androidx.test:core:1.7.0",
+            "androidx.test:core-ktx:1.7.0",
+            "androidx.test:monitor:1.8.0",
+            "androidx.test.ext:junit:1.3.0",
+        )
+    }
+}
+
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
@@ -62,10 +76,24 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.lifecycle.viewmodel.compose)
 
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.turbine)
-    testImplementation(libs.mockk)
-    androidTestImplementation(libs.mockk.android)
+//    testImplementation(libs.kotlinx.coroutines.test)
+//    testImplementation(libs.turbine)
+//    testImplementation(libs.mockk)
+//    androidTestImplementation(libs.mockk.android)
+
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")   // версия из BOM
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    //Тесты
+    testImplementation("junit:junit:4.13.2")
+//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+//    androidTestImplementation("androidx.compose.ui:ui-test-junit4:<compose_version>")
+//    debugImplementation("androidx.compose.ui:ui-test-manifest:<compose_version>")
+
+    //Тесты Hilt
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.51.1") // версия как в проекте
+    kspAndroidTest("com.google.dagger:hilt-android-compiler:2.51.1")
 
     //Icon
     implementation(libs.androidx.compose.material.icons.core)

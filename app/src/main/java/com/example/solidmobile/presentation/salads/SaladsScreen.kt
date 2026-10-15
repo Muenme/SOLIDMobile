@@ -194,7 +194,7 @@ private fun SaladItem(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Обновлён: $formattedDate",
+                    text = "Обновлен: $formattedDate",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(
                         alpha = 0.75f

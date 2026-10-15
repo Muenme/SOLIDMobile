@@ -54,7 +54,7 @@ class SaladDetailsViewModel @Inject constructor(
             .mapNotNull { fruitRepository.getNutritionsById(it) }
             .associateBy { it.id }
 
-        //отдаём UI готовый state
+        //отдаем UI готовый state
         _uiState.update {
             it.copy(
                 isLoading = false,

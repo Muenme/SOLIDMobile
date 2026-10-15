@@ -69,7 +69,7 @@ interface SaladDao {
     suspend fun isFruitInSalad(saladId: Int, fruitId: Int): Boolean
 
     //SaladFruitCrossRef Delete
-    // Update для cross-таблицы не нужен: у неё нет своих полей, кроме ключей
+    // Update для cross-таблицы не нужен: у нее нет своих полей, кроме ключей
     // "обновление" связи — это всегда delete + insert, Update() здесь бессмысленнен
 
     @Query("DELETE FROM salad_fruit_cross_ref WHERE saladId = :saladId AND fruitId = :fruitId")

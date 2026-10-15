@@ -28,7 +28,7 @@ fun FruitListScreen(viewModel: FruitListViewModel = hiltViewModel()) {
 }
 
 // "Глупая" версия — state hoisting. Не знает про ViewModel вообще,
-// поэтому её можно тестировать и превьюшить без реального ViewModel.
+// поэтому ее можно тестировать и превьюшить без реального ViewModel.
 @Composable
 fun FruitListContent(
     uiState: FruitListUiState,

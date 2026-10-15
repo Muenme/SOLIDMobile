@@ -43,6 +43,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -55,7 +56,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SaladEditScreen(
+internal fun SaladEditScreen(
     saladId: Int,
     onBackClick: () -> Unit,
     onFruitDetailsClick: (Int) -> Unit,
@@ -126,7 +127,8 @@ fun SaladEditScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(innerPadding),
+                    .padding(innerPadding)
+                    .testTag("loading_indicator"),
                 contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
@@ -147,7 +149,7 @@ fun SaladEditScreen(
 }
 
 @Composable
-private fun SaladEditContent(
+fun SaladEditContent(
     uiState: SaladEditUiState,
     onNameChange: (String) -> Unit,
     onAddFruitClick: () -> Unit,
@@ -180,7 +182,9 @@ private fun SaladEditContent(
                     }
                 },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("salad_name_input")
             )
         }
 
@@ -224,7 +228,9 @@ private fun SaladEditContent(
         item {
             OutlinedButton(
                 onClick = onAddFruitClick,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag("add_fruit_button")
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -263,6 +269,7 @@ private fun SaladEditContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
+                    .testTag("save_button")
             ) {
                 if (uiState.isSaving) {
                     CircularProgressIndicator(
@@ -344,7 +351,8 @@ private fun SelectedFruitItem(
             }
 
             IconButton(
-                onClick = onRemoveClick
+                onClick = onRemoveClick,
+                modifier = Modifier.testTag("remove_fruit_button_${fruit.id}")
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,

@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 // Связующая таблица многие ко многим, замена СompositionFruitSalad
-// Составной первичный ключ не даёт добавить один и тот же фрукт дважды
+// Составной первичный ключ не дает добавить один и тот же фрукт дважды
 @Entity(
     tableName = "salad_fruit_cross_ref",
     foreignKeys = [
