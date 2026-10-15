@@ -6,6 +6,7 @@ import com.example.solidmobile.domain.model.Fruit
 import com.example.solidmobile.domain.navigation.Screen
 import com.example.solidmobile.domain.repository.FruitRepository
 import com.example.solidmobile.domain.repository.SaladRepository
+import com.example.solidmobile.domain.usecase.DeleteSaladUseCase
 import com.example.solidmobile.domain.usecase.SaveSaladUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class SaladEditViewModel @Inject constructor(
     private val saladRepository: SaladRepository,
     private val fruitRepository: FruitRepository,
-    private val saveSalad: SaveSaladUseCase
+    private val saveSalad: SaveSaladUseCase,
+    private val deleteSalad: DeleteSaladUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SaladEditUiState())
@@ -106,6 +108,16 @@ class SaladEditViewModel @Inject constructor(
 
         _uiState.update { it.copy(isSaving = false) }
         _events.send(SaladEditEvent.Saved(savedId))
+    }
+
+    fun deleteSalad() = viewModelScope.launch {
+        val saladId = _uiState.value.saladId ?: return@launch // если id nullable
+        if (!_uiState.value.isEditing) return@launch // на новом салате кнопки не должно быть
+
+        _uiState.update { it.copy(isSaving = true, errorMessage = null) }
+        deleteSalad(saladId)
+        _uiState.update { it.copy(isSaving = false) }
+        _events.send(SaladEditEvent.Deleted)
     }
 
     private suspend fun calculateTotalCalories(fruits: List<Fruit>): Double =

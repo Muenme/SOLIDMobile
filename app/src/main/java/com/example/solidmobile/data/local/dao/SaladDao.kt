@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.example.solidmobile.data.local.entity.FruitSaladEntity
 import com.example.solidmobile.data.local.entity.SaladFruitCrossRef
@@ -38,11 +39,20 @@ interface SaladDao {
     @Delete
     suspend fun deleteSalad(salad: FruitSaladEntity)
 
+    @Query("DELETE FROM fruit_salads")
+    suspend fun deleteAllSalads()
+
+    @Query("DELETE FROM salad_fruit_cross_ref WHERE saladId = :saladId")
+    suspend fun deleteCrossRefsForSalad(saladId: Int)
+
     @Query("DELETE FROM fruit_salads WHERE id = :saladId")
     suspend fun deleteSaladById(saladId: Int)
 
-    @Query("DELETE FROM fruit_salads")
-    suspend fun deleteAllSalads()
+    @Transaction
+    suspend fun deleteSaladWithRefs(saladId: Int) {
+        deleteCrossRefsForSalad(saladId)
+        deleteSaladById(saladId)
+    }
 
     //SaladFruitCrossRef Create
 

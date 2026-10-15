@@ -48,7 +48,7 @@ class SaladRepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteSalad(saladId: Int) {
-        saladDao.deleteSaladById(saladId)   // связи в cross_ref удалятся каскадом
+        saladDao.deleteSaladWithRefs(saladId)    // связи в cross_ref удалятся каскадом
     }
 
     override suspend fun getFruitIdsForSalad(saladId: Int): List<Int> =

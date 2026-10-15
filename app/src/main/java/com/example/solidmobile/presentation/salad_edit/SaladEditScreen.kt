@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -32,6 +33,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -65,6 +67,8 @@ internal fun SaladEditScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showFruitPicker by remember { mutableStateOf(false) }
+    var showDeleteConfirm by remember { mutableStateOf(false) }
+
 
     if (showFruitPicker) {
         FruitPickerDialog(
@@ -80,6 +84,30 @@ internal fun SaladEditScreen(
             }
         )
     }
+
+    if (showDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirm = false },
+            title = { Text("Удалить салат?") },
+            text = { Text("Салат и информация о входящих в него фруктах будут удалены безвозвратно.") },
+            confirmButton = {
+                TextButton (
+                    onClick = {
+                        showDeleteConfirm = false
+                        viewModel.deleteSalad()
+                    }
+                ) {
+                    Text("Удалить", color = MaterialTheme.colorScheme.error)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirm = false }) {
+                    Text("Отмена")
+                }
+            }
+        )
+    }
+
     LaunchedEffect(saladId) {
         viewModel.loadSalad(saladId)
     }
@@ -88,6 +116,7 @@ internal fun SaladEditScreen(
         viewModel.events.collect { event ->
             when (event) {
                 is SaladEditEvent.Saved -> onSavedClick(event.saladId)
+                SaladEditEvent.Deleted -> onBackClick()
             }
         }
     }
@@ -112,6 +141,19 @@ internal fun SaladEditScreen(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Назад"
                         )
+                    }
+                },
+                actions = {
+                    if (saladId != Screen.SaladEdit.NEW_SALAD) {
+                        IconButton(
+                            onClick = { showDeleteConfirm = true },
+                            modifier = Modifier.testTag("delete_salad_button")
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Удалить салат"
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(

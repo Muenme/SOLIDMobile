@@ -14,4 +14,5 @@ data class SaladEditUiState(
 
 sealed interface SaladEditEvent {
     data class Saved(val saladId: Int) : SaladEditEvent
+    object Deleted : SaladEditEvent
 }
