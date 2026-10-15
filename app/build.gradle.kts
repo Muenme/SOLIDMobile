@@ -86,8 +86,9 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")   // версия из BOM
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    testImplementation("androidx.arch.core:core-testing:2.2.0") // для безопасности, хотя тут не LiveData
 //    androidTestImplementation("androidx.test.ext:junit:1.1.5")
 //    androidTestImplementation("androidx.compose.ui:ui-test-junit4:<compose_version>")
 //    debugImplementation("androidx.compose.ui:ui-test-manifest:<compose_version>")
